@@ -1,65 +1,68 @@
-ARG ALPINE_VERSION=3.17
+# 指定 Alpine 版本为 3.13
+ARG ALPINE_VERSION=3.13
 FROM alpine:${ALPINE_VERSION}
-LABEL Maintainer="Trainliang <trainliang@gmail.com>"
-LABEL Description="Lightweight container with Nginx 1.26 & PHP 7.4 based on Alpine Linux."
 
-# Setup document root
+# 添加维护者和描述信息
+LABEL Maintainer="Trainliang <trainliang@gmail.com>"
+LABEL Description="Lightweight container with Nginx 1.26 & PHP 7 based on Alpine Linux."
+
+# 设置工作目录
 WORKDIR /var/www/html
 
-# Update repositories and install packages
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.17/community" >> /etc/apk/repositories
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.17/main" >> /etc/apk/repositories
-RUN apk update && apk add --no-cache \
-  curl \
-  nginx \
-  php7.4 \
-  php7.4-ctype \
-  php7.4-curl \
-  php7.4-dom \
-  php7.4-fileinfo \
-  php7.4-fpm \
-  php7.4-gd \
-  php7.4-intl \
-  php7.4-mbstring \
-  php7.4-mysqli \
-  php7.4-opcache \
-  php7.4-openssl \
-  php7.4-phar \
-  php7.4-session \
-  php7.4-tokenizer \
-  php7.4-xml \
-  php7.4-xmlreader \
-  php7.4-xmlwriter \
-  supervisor
+# 使用阿里云镜像源以加快下载速度
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-# Configure nginx - http
+# 更新包索引并安装所需的软件包
+RUN apk update && apk add --no-cache \
+    curl \
+    nginx \
+    php7 \
+    php7-ctype \
+    php7-curl \
+    php7-dom \
+    php7-fileinfo \
+    php7-fpm \
+    php7-gd \
+    php7-intl \
+    php7-mbstring \
+    php7-mysqli \
+    php7-opcache \
+    php7-openssl \
+    php7-phar \
+    php7-session \
+    php7-tokenizer \
+    php7-xml \
+    php7-xmlreader \
+    php7-xmlwriter \
+    supervisor
+
+# 复制 Nginx 配置文件
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-# Configure nginx - default server
 COPY conf/conf-d /etc/nginx/conf.d/
 
-# Configure PHP-FPM
-ENV PHP_INI_DIR /etc/php7.4
+# 配置 PHP-FPM
+ENV PHP_INI_DIR=/etc/php7
 COPY conf/fpm-pool.conf ${PHP_INI_DIR}/php-fpm.d/www.conf
 COPY conf/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
 
-# Configure supervisord
+# 配置 Supervisor
 COPY conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
+# 确保非 root 用户（nobody）对所需目录和文件有访问权限
 RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
-# Switch to use a non-root user from here on
+# 切换到非 root 用户
 USER nobody
 
-# Add application
+# 复制应用代码
 COPY --chown=nobody src/ /var/www/html/
 COPY --chown=nobody errors/ /var/www/errors
 
-# Expose the port nginx is reachable on
+# 暴露 Nginx 监听的端口
 EXPOSE 8080
 
-# Let supervisord start nginx & php-fpm
+# 使用 Supervisor 启动 Nginx 和 PHP-FPM
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
-# Configure a healthcheck to validate that everything is up&running
+# 配置健康检查
 HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping || exit 1

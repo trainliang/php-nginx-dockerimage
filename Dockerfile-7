@@ -1,6 +1,6 @@
 # 使用多阶段构建精简镜像
 # 第一阶段：构建环境
-FROM --platform=$TARGETPLATFORM php:7.4-fpm-alpine AS builder
+FROM php:7.4-fpm-alpine AS builder
 
 # 安装构建依赖
 RUN apk add --no-cache --virtual .build-deps \
@@ -21,7 +21,7 @@ RUN < /tmp/php-extensions-7.list xargs -n1 docker-php-ext-install \
     && apk del .build-deps
 
 # 第二阶段：生产镜像
-FROM --platform=$TARGETPLATFORM php:7.4-fpm-alpine
+FROM php:7.4-fpm-alpine
 
 # 安装运行时依赖和进程管理器
 RUN apk add --no-cache \

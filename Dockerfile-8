@@ -49,7 +49,7 @@ COPY conf/fpm-pool.conf ${PHP_INI_DIR}/php-fpm.d/www.conf
 COPY conf/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
 
 # Configure supervisord
-COPY conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY conf/supervisord8.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
 RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx

@@ -1,0 +1,12 @@
+pdo_mysql
+mysqli
+intl
+mbstring
+opcache
+zip
+pdo_pgsql 
+pgsql 
+pdo_sqlite 
+sqlite3 
+pdo_sqlsrv 
+sqlsrv

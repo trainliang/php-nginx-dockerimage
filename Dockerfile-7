@@ -55,16 +55,16 @@ COPY conf/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
 COPY conf/supervisord7.conf /etc/supervisor/conf.d/supervisord.conf
 
 # 确保非 root 用户（nobody）对所需目录和文件有访问权限
-#RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # 切换到非 root 用户
-#USER nobody
+USER nobody
 
 # 复制应用代码
-#COPY --chown=nobody src/ /var/www/html/
-#COPY --chown=nobody errors/ /var/www/errors
-COPY  src/ /var/www/html/
-COPY  errors/ /var/www/errors
+COPY --chown=nobody src/ /var/www/html/
+COPY --chown=nobody errors/ /var/www/errors
+#COPY  src/ /var/www/html/
+#COPY  errors/ /var/www/errors
 
 # 暴露 Nginx 监听的端口
 EXPOSE 8080

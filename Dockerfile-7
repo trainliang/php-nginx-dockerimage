@@ -20,12 +20,14 @@ RUN apk add --no-cache --virtual .build-deps \
     libc-dev \
     make \
     pkgconf \
-    re2c
+    re2c \
+    zlib-dev \
+    curl-dev
 
 # 动态安装PHP扩展（示例配置）
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
     && docker-php-ext-install zip gd pdo_mysql pdo_pgsql curl bcmath \
-    && pecl install redis-5.3.7 mongodb-1.11.0 memcache-8.0.0 memcached-3.1.5 \
+    && pecl install redis mongodb memcache memcached \
     && docker-php-ext-enable redis mongodb memcache memcached
 
 # 第二阶段：生产镜像

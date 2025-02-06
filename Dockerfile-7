@@ -63,8 +63,8 @@ COPY conf/supervisord7.conf /etc/supervisor/conf.d/supervisord.conf
 # 复制应用代码
 #COPY --chown=nobody src/ /var/www/html/
 #COPY --chown=nobody errors/ /var/www/errors
-COPY --chown=nobody src/ /var/www/html/
-COPY --chown=nobody errors/ /var/www/errors
+COPY  src/ /var/www/html/
+COPY  errors/ /var/www/errors
 
 # 暴露 Nginx 监听的端口
 EXPOSE 8080

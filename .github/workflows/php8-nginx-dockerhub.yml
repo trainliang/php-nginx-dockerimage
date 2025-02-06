@@ -1,4 +1,4 @@
-name: php8-nginx docker images
+name: php8-nginx dockerhub images
 # 触发器设置
 on:
   push:

@@ -1,4 +1,4 @@
-name: php7-nginx docker images
+name: php7-nginx dockerhub images
 # 触发器设置
 on:
   push:

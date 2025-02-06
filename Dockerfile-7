@@ -9,9 +9,6 @@ LABEL Description="Lightweight container with Nginx 1.26 & PHP 7 based on Alpine
 # 设置工作目录
 WORKDIR /var/www/html
 
-# 使用阿里云镜像源以加快下载速度
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
-
 # 更新包索引并安装所需的软件包
 RUN apk update && apk add --no-cache \
     curl \

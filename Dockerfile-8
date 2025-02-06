@@ -26,7 +26,6 @@ RUN apk add --no-cache --virtual .build-deps \
     libpng-dev
 
 # 动态安装PHP扩展（示例配置）
-COPY php-extensions-8.list /tmp/
 RUN install-php-extensions zip gd pdo_mysql pdo_pgsql curl redis mongodb memcache memcached bcmath
 
 

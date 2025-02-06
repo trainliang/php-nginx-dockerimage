@@ -7,28 +7,36 @@ WORKDIR /var/www/html
 
 # Install packages and remove default server definition
 RUN apk add --no-cache \
-  curl \
-  nginx \
-  php84 \
-  php84-ctype \
-  php84-curl \
-  php84-dom \
-  php84-fileinfo \
-  php84-fpm \
-  php84-gd \
-  php84-pdo \
-  php84-intl \
-  php84-mbstring \
-  php84-mysqli \
-  php84-opcache \
-  php84-openssl \
-  php84-phar \
-  php84-session \
-  php84-tokenizer \
-  php84-xml \
-  php84-xmlreader \
-  php84-xmlwriter \
-  supervisor
+    curl \
+    nginx \
+    php84 \
+    php84-zip \
+    php84-pdo_mysql \
+    php84-pdo_pgsql \
+    php84-mongodb \
+    php84-pecl-memcache \
+    php84-pecl-memcached \
+    php84-bcmath \
+    php84-redis \
+    php84-ctype \
+    php84-curl \
+    php84-dom \
+    php84-fileinfo \
+    php84-fpm \
+    php84-gd \
+    php84-pdo \
+    php84-intl \
+    php84-mbstring \
+    php84-mysqli \
+    php84-opcache \
+    php84-openssl \
+    php84-phar \
+    php84-session \
+    php84-tokenizer \
+    php84-xml \
+    php84-xmlreader \
+    php84-xmlwriter \
+    supervisor
 
 # Configure nginx - http
 COPY conf/nginx.conf /etc/nginx/nginx.conf

@@ -48,6 +48,7 @@ jobs:
           push: true
           # 指定用户/仓库名
           tags: |
+            ${{ secrets.DOCKER_USERNAME }}/php-nginx:latest
             ${{ secrets.DOCKER_USERNAME }}/php-nginx:8-latest
             ${{ secrets.DOCKER_USERNAME }}/php-nginx:${{ env.app_version }}.8
       # 这里是通过md文件自动生成dockerhub描述的模块，也可以不需要

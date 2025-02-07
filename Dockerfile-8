@@ -52,10 +52,10 @@ COPY conf/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
 COPY conf/supervisord8.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx && chown -R 775 /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # 创建 /logs 目录并设置权限
-RUN mkdir -p /logs && chown -R nobody:nobody /logs
+RUN mkdir -p /logs && chown -R nobody:nobody /logs && chmod -R 775 /logs
 
 # Switch to use a non-root user from here on
 USER nobody

@@ -54,11 +54,11 @@ COPY conf/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
 # 配置 Supervisor
 COPY conf/supervisord7.conf /etc/supervisor/conf.d/supervisord.conf
 
-# 确保非 root 用户（nobody）对所需目录和文件有访问权限
-RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+# Make sure files/folders needed by the processes are accessable when they run under the nobody user
+RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx && chown -R 775 /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # 创建 /logs 目录并设置权限
-RUN mkdir -p /logs && chown -R nobody:nobody /logs
+RUN mkdir -p /logs && chown -R nobody:nobody /logs && chmod -R 775 /logs
 
 # 切换到非 root 用户
 USER nobody

@@ -54,6 +54,9 @@ COPY conf/supervisord8.conf /etc/supervisor/conf.d/supervisord.conf
 # 确保非 root 用户（nobody）对所需目录和文件有访问权限
 RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
+# 创建 /logs 目录并设置权限
+RUN mkdir -p /www/logs  && chmod -R nobody:nobody /www/logs && chmod -R 775 /www/logs
+
 # 切换到非 root 用户
 USER nobody
 

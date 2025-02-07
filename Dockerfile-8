@@ -51,20 +51,18 @@ COPY conf/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
 # Configure supervisord
 COPY conf/supervisord8.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R 775 /var/www/html /run /var/lib/nginx /var/log/nginx
-
-# 创建 /logs 目录并设置权限
-RUN mkdir -p /var/www/logs  && chmod -R 775 /var/www/logs
+# 确保非 root 用户（nobody）对所需目录和文件有访问权限
+RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # 切换到非 root 用户
-#USER nobody
+USER nobody
 
 # 复制应用代码
-COPY --chown=775 src/ /var/www/html/
-COPY --chown=775 errors/ /var/www/errors
-#COPY src/ /var/www/html/
-#COPY errors/ /var/www/errors
+COPY --chown=nobody src/ /var/www/html/
+COPY --chown=nobody errors/ /var/www/errors
+#COPY  src/ /var/www/html/
+#COPY  errors/ /var/www/errors
+
 # Expose the port nginx is reachable on
 EXPOSE 8080
 

@@ -51,9 +51,9 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/php-nginx:v7.${{ env.CURRENT_DATE }}
       # 这里是通过md文件自动生成dockerhub描述的模块，也可以不需要
       - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
+        uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ secrets.DOCKER_USERNAME }}/kook-ticket-bot
+          repository: ${{ secrets.DOCKER_USERNAME }}/dockerhub-description
           readme-filepath: ./README.md

@@ -57,11 +57,11 @@ COPY conf/supervisord7.conf /etc/supervisor/conf.d/supervisord.conf
 # 确保非 root 用户（nobody）对所需目录和文件有访问权限
 RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
-# 切换到非 root 用户
-USER nobody
-
 # 创建 /logs 目录并设置权限
 RUN mkdir -p /logs && chown -R nobody:nobody /logs
+
+# 切换到非 root 用户
+USER nobody
 
 # 复制应用代码
 COPY --chown=nobody src/ /var/www/html/

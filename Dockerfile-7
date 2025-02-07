@@ -58,7 +58,7 @@ COPY conf/supervisord7.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # 创建 /logs 目录并设置权限
-RUN mkdir -p /www/logs  && chmod -R nobody:nobody /www/logs
+RUN mkdir -p /www/logs  && chown -R nobody:nobody /www/logs && chown -R 775 /www/logs
 
 # 切换到非 root 用户
 USER nobody

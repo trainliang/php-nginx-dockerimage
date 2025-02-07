@@ -55,5 +55,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ secrets.DOCKER_USERNAME }}/dockerhub-description
+          repository: ${{ secrets.DOCKER_USERNAME }}/php-nginx
           readme-filepath: ./README.md

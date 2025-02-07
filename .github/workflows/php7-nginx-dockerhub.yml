@@ -5,7 +5,9 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
+  schedule:
+    # 每月1号触发
+    - cron: '24 10 1 * *'
 # 项目任务，任务之间可以并行调度
 jobs:
   build:
@@ -28,11 +30,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
       # 设置当前的发行版本tag
-      - name: Release version
-        id: release_version
-        run: |
-          app_version=$(cat version.py |sed -ne "s/APP_VERSION\s=\s'v\(.*\)'/\1/gp")
-          echo "app_version=$app_version" >> $GITHUB_ENV
+      - name: Set current date as env variable
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
       # 开始构建镜像
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -49,12 +48,12 @@ jobs:
           # 指定用户/仓库名
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/php-nginx:7-latest
-            ${{ secrets.DOCKER_USERNAME }}/php-nginx:${{ env.app_version }}.7
+            ${{ secrets.DOCKER_USERNAME }}/php-nginx:v7.${{ env.CURRENT_DATE }}
       # 这里是通过md文件自动生成dockerhub描述的模块，也可以不需要
-#      - name: Docker Hub Description
-#        uses: peter-evans/dockerhub-description@v3
-#        with:
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
-#          repository: ${{ secrets.DOCKER_USERNAME }}/kook-ticket-bot
-#          readme-filepath: ./README.md
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ secrets.DOCKER_USERNAME }}/kook-ticket-bot
+          readme-filepath: ./README.md
